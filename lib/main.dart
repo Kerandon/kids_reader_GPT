@@ -24,11 +24,14 @@ class KidsReaderGPT extends StatefulWidget {
 class _KidsReaderGPTState extends State<KidsReaderGPT> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: appTheme,
-        title: kAppName,
-        home: ProviderScope(child: const HomePage())
+    return ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: appTheme,
+          title: kAppName,
+          home: const HomePage()
 
+      ),
     );
   }
 }
