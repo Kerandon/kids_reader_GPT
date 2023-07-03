@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kids_reader_gpt/pages/story_page/story_page.dart';
 
 class LoadingHelper extends StatelessWidget {
   const LoadingHelper(
@@ -15,14 +14,13 @@ class LoadingHelper extends StatelessWidget {
         future: future,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print('HAS DATA');
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                 onComplete.call(snapshot.data);
             });
 
           }
 
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         });
   }
 }

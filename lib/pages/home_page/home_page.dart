@@ -1,85 +1,134 @@
 import 'package:flutter/material.dart';
-import 'package:kids_reader_gpt/configs/constants.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kids_reader_gpt/animations/spring_animation.dart';
+import 'package:kids_reader_gpt/models/topic_model.dart';
+import 'package:kids_reader_gpt/pages/home_page/topic_cards/topic_card_contents.dart';
 import 'package:kids_reader_gpt/pages/home_page/topic_cards/topic_landing_tile.dart';
+import 'package:kids_reader_gpt/state_management/state_manager.dart';
 
 import 'story_button/story_button.dart';
 import 'topic_cards/topic_card_main.dart';
 import '../../data/topics.dart';
 
-class HomePage   extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
+  bool _setUpTopicModels = false;
+  bool _animate = false;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    final state = ref.watch(appProvider);
+    final notifier = ref.read(appProvider.notifier);
+    if (!_setUpTopicModels) {
+      _setUpTopicModels = true;
+      List<TopicModel> topicsList = [];
+      for (var t in topics) {
+        topicsList.add(TopicModel(t));
+      }
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        notifier.setTopics(topics: topicsList);
+      });
+    }
+    final safePadding = MediaQuery.of(context).padding.top;
+
+    Offset droppedOffset = Offset.zero;
+    Offset originalOffset = Offset.zero;
+
+    TopicModel? topic;
+    for (var m in state.topicModels) {
+      if (m.droppedOffset != Offset.zero) {
+        topic = m;
+      }
+    }
+
+    if (state.topicModels.isNotEmpty && topic != null) {
+      droppedOffset =
+          Offset(topic.droppedOffset.dx, topic.droppedOffset.dy - safePadding);
+      originalOffset = Offset(
+          topic.originalOffset.dx, topic.originalOffset.dy - safePadding);
+    }
+
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(kAppName,
-              style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          centerTitle: true,
-        ),
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            final biggest = constraints.biggest;
-            return Column(
-            children: [
-              Container(
-                color: Colors.red,
-                height: biggest.height * 0.40,
-                child: Center(
-                  child: SizedBox(
-                    height: biggest.height * 0.35,
-                    width: biggest.width,
-                    child: ListView.builder(
-                      itemCount: topics.length,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    color: Colors.black38,
+                    child: Center(
+                      child: ListView.builder(
+                        itemCount: state.topicModels.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) =>
-                            TopicCardMain(topic: topics[index],),)
+                            TopicCardMain(topic: state.topicModels[index]),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                color: Colors.green,
-                height: size.height * 0.30,
-                width: size.width,
-                child:
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    3,
-                        (index) {
-                      if (index % 2 == 0) {
-                        return TopicLandingTile(index); // Original child container
-                      } else {
-                        return Icon(Icons.add); // Plus icon
-                      }
-                    },
-                  ).expand(
-                        (widget) => [
-                      widget,
-                      SizedBox(width: 10), // Adjust the spacing between containers and plus icons
-                    ],
-                  ).toList(),
-                )
-
-
-
-              ),
-              Padding(
-                padding: EdgeInsets.all(size.height * 0.01),
-                child: StoryButton(),
-              )
-            ],
-          );
-          },
+                Expanded(
+                  child: Container(
+                      color: Colors.green,
+                      height: size.height * 0.30,
+                      width: size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          3,
+                          (index) {
+                            if (index % 2 == 0) {
+                              return TopicLandingTile(
+                                  index); // Original child container
+                            } else {
+                              return const Icon(Icons.add); // Plus icon
+                            }
+                          },
+                        )
+                            .expand(
+                              (widget) => [
+                                widget,
+                                const SizedBox(width: 10),
+                                // Adjust the spacing between containers and plus icons
+                              ],
+                            )
+                            .toList(),
+                      )),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(size.height * 0.01),
+                    child: const StoryButton(),
+                  ),
+                ),
+              ],
+            ),
+            Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    _animate = true;
+                    setState(() {});
+                  },
+                  child: const Text('check status')),
+            ),
+            _animate
+                ? SpringAnimation(
+                    animate: _animate,
+                    startOffset: droppedOffset,
+                    endOffset: originalOffset,
+                    child: TopicContents(
+                      topic: state.topicModels.first,
+                    ))
+                : const SizedBox()
+          ],
         ),
       ),
     );

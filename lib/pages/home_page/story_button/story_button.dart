@@ -18,7 +18,7 @@ class StoryButton extends ConsumerStatefulWidget {
 }
 
 class _StoryButtonState extends ConsumerState<StoryButton> {
-  late final _openAI;
+  late final OpenAI _openAI;
 
   @override
   void initState() {
@@ -34,6 +34,7 @@ class _StoryButtonState extends ConsumerState<StoryButton> {
     final size = MediaQuery
         .of(context)
         .size;
+    final state = ref.watch(appProvider);
     final notifier = ref.read(appProvider.notifier);
     return Bounce(
       child: SizedBox(
@@ -47,34 +48,34 @@ class _StoryButtonState extends ConsumerState<StoryButton> {
               onPressed: () async {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => 
-                    LoadingHelper(future: chatComplete(_openAI),
+                    LoadingHelper(future: chatComplete(openAI: _openAI, appState: state),
                     onComplete: (payload){
                       final result = payload as ChatCTResponse;
-                      print(result.choices.toString());
 
                       final text = result.choices.last.message!.content;
 
                       notifier.setStory(story: text.split(" "));
 
                       Navigator.of(context).push(MaterialPageRoute(builder: (context)
-                      => StoryPage()
+                      => const StoryPage()
                       ));
 
 
                     },
                     )));
               },
-              child: Text('Make a story!'))
+              child: const Text('Make a story!'))
       ),
     );
   }
 
-  Future<ChatCTResponse?> chatComplete(OpenAI openAI) async {
+  Future<ChatCTResponse?> chatComplete({required OpenAI openAI, required AppState appState}) async {
+
     final request = ChatCompleteText(messages: [
       Map.of({
         "role": "user",
         "content": 'Can you tell me a short story about a '
-            'cat less than 50 words and aimed for a 6 year old?'
+            'cats and a dogs than 50 words and aimed for a 6 year old?'
       })
     ], maxToken: 200, model: ChatModel.gptTurbo);
 

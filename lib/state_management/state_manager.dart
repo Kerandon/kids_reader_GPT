@@ -1,24 +1,22 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../models/topic_model.dart';
 
 class AppState {
-  final String topicDragged;
-  final Map<int, String> placedTopics;
+  final List<TopicModel> topicModels;
   final List<String> story;
 
-  AppState(
-      {required this.topicDragged,
-      required this.placedTopics,
-      required this.story});
+  AppState({
+    required this.story,
+    required this.topicModels,
+  });
 
   AppState copyWith({
-    String? topicDragged,
-    Map<int, String>? placedTopics,
     List<String>? story,
+    List<TopicModel>? topicModels,
   }) {
     return AppState(
-      topicDragged: topicDragged ?? this.topicDragged,
-      placedTopics: placedTopics ?? this.placedTopics,
       story: story ?? this.story,
+      topicModels: topicModels ?? this.topicModels,
     );
   }
 }
@@ -26,26 +24,34 @@ class AppState {
 class AppStateNotifier extends StateNotifier<AppState> {
   AppStateNotifier(AppState state) : super(state);
 
-  void setTopicDragged({required String topic}) {
-    state = state.copyWith(topicDragged: topic);
+  void setTopics({required List<TopicModel> topics}) {
+    state = state.copyWith(topicModels: topics);
   }
 
-  void addPlacedTopics({required Map<int, String> topics}) {
-    state = state.copyWith(
-      placedTopics: Map<int, String>.from(state.placedTopics)..addAll(topics),
-    );
+  void updateTopic(TopicModel model) {
+    List<TopicModel> models = state.topicModels;
+
+    int index = models.indexWhere((m) => m.name == model.name);
+
+    if (index != -1) {
+      models[index] = model;
+    }
+
+    //print('models  IS ${models[index].name} ${models[index].droppedOffset}');
+
+    state = state.copyWith(topicModels: models);
   }
 
   void setStory({required List<String> story}) {
-    print('story is set ${story} and ${story.length}');
     state = state.copyWith(story: story.toList());
-
-
   }
 }
 
 final appProvider = StateNotifierProvider<AppStateNotifier, AppState>(
   (ref) => AppStateNotifier(
-    AppState(topicDragged: "", placedTopics: {}, story: []),
+    AppState(
+      story: [],
+      topicModels: [],
+    ),
   ),
 );

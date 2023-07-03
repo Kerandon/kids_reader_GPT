@@ -4,15 +4,14 @@ class FlutterTTSService {
 
 
 
-  Future speak(String text) async{
-    print('speak $text');
+  Future<void> speak(String text) async{
+
     FlutterTts flutterTts = FlutterTts();
     await flutterTts.setLanguage('en-US');
     await flutterTts.setSpeechRate(0.40);
     await flutterTts.setVolume(1.0);
     await flutterTts.setPitch(1.0);
-    var result = await flutterTts.speak(text);
-    print(result);
+    await flutterTts.speak(text);
   }
 
 

@@ -26,12 +26,10 @@ class _KidsReaderGPTState extends State<KidsReaderGPT> {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: appTheme,
+          debugShowCheckedModeBanner: false,
+          theme: appTheme,
           title: kAppName,
-          home: const HomePage()
-
-      ),
+          home: const HomePage()),
     );
   }
 }

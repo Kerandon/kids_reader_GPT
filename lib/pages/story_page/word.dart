@@ -1,8 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:kids_reader_gpt/services/flutter_tts_service.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
 class Word extends StatefulWidget {
   const Word({
@@ -33,7 +31,7 @@ FlutterTTSService().speak(widget.word);
           child: Padding(
             padding: const EdgeInsets.all(18.0),
             child: Text(widget.word,
-              style: TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: 30),
             ),
           ),
         ),
