@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kids_reader_gpt/animations/spring_animation.dart';
 import 'package:kids_reader_gpt/configs/constants.dart';
 import 'package:kids_reader_gpt/models/topic_model.dart';
 import 'package:kids_reader_gpt/pages/home_page/topic_cards/topic_card_contents.dart';
@@ -46,32 +50,39 @@ class _TopicCardMainState extends ConsumerState<TopicCardMain> {
       }
     }
 
-    return Container(
-      color: Colors.deepOrange,
-      key: _key,
-      width: size.width * kTopicWidth,
-      height: size.height * kTopicHeight,
-      child: widget.topic.isDragged == true || isPlaced
-          ? const SizedBox()
-          : Draggable<TopicModel>(
-              data: widget.topic,
-              onDragStarted: () {
-                notifier.updateTopic(widget.topic.copyWith(isDragged: true));
-              },
-              onDraggableCanceled: (velocity, offset) {
-                notifier.updateTopic(widget.topic.copyWith(
-                    isDragged: false,
-                    droppedOffset: offset,
-                    droppedVelocity: velocity));
-              },
-              feedback: TopicContents(
-                topic: widget.topic,
-                addShadow: true,
-              ),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: TopicContents(topic: widget.topic)),
-            ),
+
+
+    return Stack(
+      children: [
+        Container(
+          color: Colors.deepOrange,
+          key: _key,
+          width: size.width * kTopicWidth,
+          height: size.height * kTopicHeight,
+          child: widget.topic.isDragged == true || isPlaced
+              ? const SizedBox()
+              : Draggable<TopicModel>(
+                  data: widget.topic,
+                  onDragStarted: () {
+                    notifier.updateTopic(widget.topic.copyWith(isDragged: true));
+                  },
+                onDragUpdate: (details){
+                    print('details $details');
+                },
+                  onDraggableCanceled: (velocity, offset) {
+                    notifier.updateTopic(widget.topic.copyWith(
+                        isDragged: false,
+                        droppedOffset: offset,
+                        droppedVelocity: velocity));
+                  },
+                  feedback: TopicContents(
+                    topic: widget.topic,
+                    addShadow: true,
+                  ),
+                  child: TopicContents(topic: widget.topic),
+                ).animate().fade(delay: Duration(seconds: 1),duration: Duration.zero)
+        ),
+      ],
     );
   }
 }

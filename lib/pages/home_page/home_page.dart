@@ -19,7 +19,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   bool _setUpTopicModels = false;
-  bool _animate = false;
+  bool _animate = false, _reset = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +46,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     for (var m in state.topicModels) {
       if (m.droppedOffset != Offset.zero) {
         topic = m;
+        _animate = true;
+        print(m.droppedOffset);
       }
     }
 
@@ -114,7 +116,12 @@ class _HomePageState extends ConsumerState<HomePage> {
             Center(
               child: ElevatedButton(
                   onPressed: () {
-                    _animate = true;
+                    _reset = false;
+                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                      _animate = true;
+                    });
+                    notifier.updateTopic(
+                        topic!.copyWith(droppedOffset: Offset.zero));
                     setState(() {});
                   },
                   child: const Text('check status')),
@@ -122,8 +129,19 @@ class _HomePageState extends ConsumerState<HomePage> {
             _animate
                 ? SpringAnimation(
                     animate: _animate,
+                    reset: _reset,
                     startOffset: droppedOffset,
                     endOffset: originalOffset,
+                    onComplete: () {
+                      _animate = false;
+                      _reset = true;
+                      setState(() {});
+
+                      if (topic != null) {
+                        notifier.updateTopic(
+                            topic.copyWith(droppedOffset: Offset.zero));
+                      }
+                    },
                     child: TopicContents(
                       topic: state.topicModels.first,
                     ))
