@@ -11,8 +11,7 @@ class Bounce extends StatefulWidget {
   State<Bounce> createState() => _BounceState();
 }
 
-class _BounceState extends State<Bounce>
-    with SingleTickerProviderStateMixin {
+class _BounceState extends State<Bounce> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
 

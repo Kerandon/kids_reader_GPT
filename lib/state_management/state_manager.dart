@@ -1,28 +1,49 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:kids_reader_gpt/enums/story_stage.dart';
+import '../models/story_selection.dart';
 import '../models/topic_model.dart';
 
 class AppState {
+  final StoryStage storyStage;
+  final StorySelection storySelection;
   final List<TopicModel> topicModels;
   final List<String> story;
 
   AppState({
-    required this.story,
+    required this.storyStage,
+    required this.storySelection,
     required this.topicModels,
+    required this.story,
   });
 
-  AppState copyWith({
-    List<String>? story,
-    List<TopicModel>? topicModels,
-  }) {
+  AppState copyWith(
+      {StoryStage? storyStage,
+      StorySelection? storySelection,
+      List<TopicModel>? topicModels,
+      List<String>? story}) {
     return AppState(
-      story: story ?? this.story,
+      storyStage: storyStage ?? this.storyStage,
+      storySelection: storySelection ?? this.storySelection,
       topicModels: topicModels ?? this.topicModels,
+      story: story ?? this.story,
     );
   }
 }
 
 class AppStateNotifier extends StateNotifier<AppState> {
   AppStateNotifier(AppState state) : super(state);
+
+  void setStoryStage(StoryStage stage) {
+    state = state.copyWith(storyStage: stage);
+  }
+
+  void setStorySelection(StorySelection selection) {
+    state = state.copyWith(storySelection: selection);
+
+    for(var s in state.storySelection.topics){
+      print('${state.storySelection.topics.length} and $s');
+    }
+  }
 
   void setTopics({required List<TopicModel> topics}) {
     state = state.copyWith(topicModels: topics);
@@ -31,13 +52,11 @@ class AppStateNotifier extends StateNotifier<AppState> {
   void updateTopic(TopicModel model) {
     List<TopicModel> models = state.topicModels;
 
-    int index = models.indexWhere((m) => m.name == model.name);
+    int index = models.indexWhere((m) => m.character == model.character);
 
     if (index != -1) {
       models[index] = model;
     }
-
-    //print('models  IS ${models[index].name} ${models[index].droppedOffset}');
 
     state = state.copyWith(topicModels: models);
   }
@@ -50,6 +69,8 @@ class AppStateNotifier extends StateNotifier<AppState> {
 final appProvider = StateNotifierProvider<AppStateNotifier, AppState>(
   (ref) => AppStateNotifier(
     AppState(
+      storyStage: StoryStage.topics,
+      storySelection: const StorySelection(),
       story: [],
       topicModels: [],
     ),

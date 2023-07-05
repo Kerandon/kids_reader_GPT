@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../configs/constants.dart';
+
 class SpringAnimation extends StatefulWidget {
   const SpringAnimation(
       {required this.child,
@@ -25,25 +27,17 @@ class _SpringAnimationState extends State<SpringAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
-  // final spring = const SpringDescription(
-  //   mass: 10,
-  //   stiffness: 1,
-  //   damping: 1,
-  // );
-  // late final _simulation;
-
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this)
+        duration: const Duration(milliseconds: kSpringAnimationDuration),
+        vsync: this)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           widget.onComplete?.call();
         }
       });
-
-    // _simulation = SpringSimulation(spring, 0, 1, 1);
   }
 
   @override
@@ -66,9 +60,9 @@ class _SpringAnimationState extends State<SpringAnimation>
 
   @override
   Widget build(BuildContext context) {
-    final animation = Tween<Offset>(
-            begin: widget.startOffset, end: widget.endOffset)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.linear));
+    final animation =
+        Tween<Offset>(begin: widget.startOffset, end: widget.endOffset).animate(
+            CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
 
     // print(
     //     'values  received is start ${widget.startOffset} and end ${widget.endOffset}');

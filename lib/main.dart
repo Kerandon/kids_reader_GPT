@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kids_reader_gpt/configs/constants.dart';
 import 'package:kids_reader_gpt/configs/theme/theme_data.dart';
-import 'package:kids_reader_gpt/pages/home_page/home_page.dart';
+import 'package:kids_reader_gpt/pages/set_up/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

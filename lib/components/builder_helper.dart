@@ -15,9 +15,8 @@ class LoadingHelper extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                onComplete.call(snapshot.data);
+              onComplete.call(snapshot.data);
             });
-
           }
 
           return const Center(child: CircularProgressIndicator());

@@ -5,7 +5,8 @@ extension GlobalKeyExtension on GlobalKey {
   // Define a method to get the widget rect
   Rect? getWidgetRect() {
     // Get the render box of the widget
-    final RenderBox? renderBox = currentContext?.findRenderObject() as RenderBox?;
+    final RenderBox? renderBox =
+        currentContext?.findRenderObject() as RenderBox?;
     // If the render box is not null, return a Rect object with the size and offset
     if (renderBox != null) {
       final Size size = renderBox.size;

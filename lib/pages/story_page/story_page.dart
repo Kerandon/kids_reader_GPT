@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:kids_reader_gpt/pages/home_page/home_page.dart';
 import 'package:kids_reader_gpt/state_management/state_manager.dart';
 import 'word.dart';
-import '../../data/stories.dart';
 
 class StoryPage extends ConsumerStatefulWidget {
   const StoryPage({Key? key}) : super(key: key);
@@ -15,7 +13,7 @@ class StoryPage extends ConsumerStatefulWidget {
 class _StoryPageState extends ConsumerState<StoryPage> {
   bool _storySetUp = false;
 
-  List<String> words = stories[0].split(" ");
+  List<String> words = 'hello how are you'[0].split(" ");
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +26,8 @@ class _StoryPageState extends ConsumerState<StoryPage> {
 
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(onPressed: (){
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:
-            (context) => const HomePage()), (route) => false);
-          },
-              icon: const Icon(Icons.arrow_back_outlined)),
+          leading: IconButton(
+              onPressed: () {}, icon: const Icon(Icons.arrow_back_outlined)),
         ),
         body: Center(
           child: Wrap(
