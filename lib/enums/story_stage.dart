@@ -1,6 +1,6 @@
 enum StoryStage {
   topics,
-  characters,
+  character,
   theme,
   story,
 }

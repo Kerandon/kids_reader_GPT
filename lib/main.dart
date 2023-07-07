@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kids_reader_gpt/configs/constants.dart';
 import 'package:kids_reader_gpt/configs/theme/theme_data.dart';
-import 'package:kids_reader_gpt/pages/set_up/home_page.dart';
+import 'package:kids_reader_gpt/pages/selection/selection_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +29,7 @@ class _KidsReaderGPTState extends State<KidsReaderGPT> {
           debugShowCheckedModeBanner: false,
           theme: appTheme,
           title: kAppName,
-          home: const HomePage()),
+          home: const SelectionPage()),
     );
   }
 }

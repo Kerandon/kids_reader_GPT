@@ -39,10 +39,6 @@ class AppStateNotifier extends StateNotifier<AppState> {
 
   void setStorySelection(StorySelection selection) {
     state = state.copyWith(storySelection: selection);
-
-    for(var s in state.storySelection.topics){
-      print('${state.storySelection.topics.length} and $s');
-    }
   }
 
   void setTopics({required List<TopicModel> topics}) {
@@ -63,6 +59,11 @@ class AppStateNotifier extends StateNotifier<AppState> {
 
   void setStory({required List<String> story}) {
     state = state.copyWith(story: story.toList());
+  }
+
+  void reset(){
+    state = state.copyWith(storyStage: StoryStage.topics, storySelection:
+    const StorySelection(), story: []);
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:kids_reader_gpt/models/topic_model.dart';
 
-import '../enums/Topics.dart';
+import '../enums/topics.dart';
 
 List<TopicModel> topics = [
   TopicModel(Topics.fairyTales.name, 'Snow White'),
@@ -11,7 +11,6 @@ List<TopicModel> topics = [
   TopicModel(Topics.fairyTales.name, 'Pocahontas'),
   TopicModel(Topics.fairyTales.name, 'Mulan'),
   TopicModel(Topics.fairyTales.name, 'Tiana'),
-  TopicModel(Topics.fairyTales.name, 'Rapunzel'),
   TopicModel(Topics.animals.name, 'Tiger'),
   TopicModel(Topics.animals.name, 'Giraffe'),
   TopicModel(Topics.beasts.name, 'Tiana'),

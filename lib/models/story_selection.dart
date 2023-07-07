@@ -1,10 +1,10 @@
 class StorySelection {
-  final List<String> topics;
+  final List<String> topic;
   final List<String> characters;
   final List<String> theme;
 
   const StorySelection({
-    this.topics = const [],
+    this.topic = const [],
     this.characters = const [],
     this.theme = const [],
   });
@@ -15,10 +15,9 @@ class StorySelection {
     List<String>? theme,
   }) {
     return StorySelection(
-      topics: topics ?? this.topics,
+      topic: topics ?? topic,
       characters: characters ?? this.characters,
       theme: theme ?? this.theme,
     );
   }
 }
-
