@@ -22,7 +22,7 @@ class Popup extends StatelessWidget {
       content: subtitle == null ? null : Text(
         subtitle!,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.headlineLarge,
+        style: Theme.of(context).textTheme.headlineSmall,
       ),
     );
   }

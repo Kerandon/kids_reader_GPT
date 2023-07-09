@@ -63,7 +63,6 @@ class _SelectionPageState extends ConsumerState<SelectionPage> {
           .toList();
     }
 
-    print('current selection is ${currentSelectionToDisplay.length}');
 
     return SafeArea(
       child: Scaffold(
@@ -101,7 +100,7 @@ class _SelectionPageState extends ConsumerState<SelectionPage> {
                       child: SizedBox(
                         width: size.width * 0.08,
                         child: Center(
-                          child: TopicTile(topic),
+                          child: TopicTile(0, topic),
                         ),
                       ),
                     );
@@ -127,7 +126,9 @@ class _SelectionPageState extends ConsumerState<SelectionPage> {
                     scrollDirection: Axis.horizontal,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: crossAxisCount),
-                    itemBuilder: (context, index) => TopicTile(_items[index]),
+                    itemBuilder: (context, index) => TopicTile(
+                        index,
+                        _items[index]),
                   ),
                 ),
               ),

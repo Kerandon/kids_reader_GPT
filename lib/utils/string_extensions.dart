@@ -7,4 +7,15 @@ extension StringExtensions on String {
 
     return words;
   }
+  String toSentenceCase() {
+    // Split the string by uppercase letters
+    List<String> words = split(RegExp(r"(?=[A-Z])"));
+    // Capitalize the first word and lowercase the rest
+    words[0] = words[0][0].toUpperCase() + words[0].substring(1).toLowerCase();
+    for (int i = 1; i < words.length; i++) {
+      words[i] = words[i].toLowerCase();
+    }
+    // Join the words with spaces
+    return words.join(" ");
+  }
 }

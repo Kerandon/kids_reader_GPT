@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-class Bounce extends StatefulWidget {
-  const Bounce({required this.child, this.animate = true, Key? key})
+class BounceAnimation extends StatefulWidget {
+  const BounceAnimation({required this.child, this.animate = true, this.endScale = 1.05, Key? key})
       : super(key: key);
 
   final Widget child;
   final bool animate;
+  final double endScale;
 
   @override
-  State<Bounce> createState() => _BounceState();
+  State<BounceAnimation> createState() => _BounceAnimationState();
 }
 
-class _BounceState extends State<Bounce> with SingleTickerProviderStateMixin {
+class _BounceAnimationState extends State<BounceAnimation> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -20,7 +21,7 @@ class _BounceState extends State<Bounce> with SingleTickerProviderStateMixin {
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
 
-    _animation = Tween<double>(begin: 1.0, end: 1.05).animate(
+    _animation = Tween<double>(begin: 1.0, end: widget.endScale).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeInOut,
@@ -41,7 +42,7 @@ class _BounceState extends State<Bounce> with SingleTickerProviderStateMixin {
   }
 
   @override
-  void didUpdateWidget(covariant Bounce oldWidget) {
+  void didUpdateWidget(covariant BounceAnimation oldWidget) {
     if (widget.animate) {
       _startAnimation();
     } else {
