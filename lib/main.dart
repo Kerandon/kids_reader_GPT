@@ -39,60 +39,60 @@ class _KidsReaderGPTState extends State<KidsReaderGPT> {
   }
 }
 
-class TEST extends StatefulWidget {
-  const TEST({Key? key}) : super(key: key);
-
-  @override
-  State<TEST> createState() => _TESTState();
-}
-
-class _TESTState extends State<TEST> {
-  late final Future _getImage;
-
-  @override
-  void initState() {
-    _getImage = _generateImageFuture();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Make Image'),
-      ),
-      body: FutureBuilder(
-          future: _getImage,
-          builder: (context, snapshot) {
-
-            if(snapshot.hasData) {
-              final image = snapshot.data as GenImgResponse;
-              return Center(
-                child: Container(
-                  width: 200,
-                  height: 200,
-
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-
-                    image: DecorationImage(
-                      image: NetworkImage(image.data!.first!.url!),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              );
-            }else return Container(color: Colors.green,);
-    }
-    ));
-  }
-}
-Future<GenImgResponse> _generateImageFuture() async {
-  const prompt = "snow white & dinosaur cartoon";
-
-  final request = GenerateImage(prompt, 1,size: ImageSize.size256,
-      responseFormat: Format.url);
-  final response = await initOpenAI().generateImage(request);
-  print("img url :${response?.data?.last?.url}");
-  return response!;
-}
+// class TEST extends StatefulWidget {
+//   const TEST({Key? key}) : super(key: key);
+//
+//   @override
+//   State<TEST> createState() => _TESTState();
+// }
+//
+// class _TESTState extends State<TEST> {
+//   late final Future _getImage;
+//
+//   @override
+//   void initState() {
+//     _getImage = _generateImageFuture();
+//     super.initState();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Make Image'),
+//       ),
+//       body: FutureBuilder(
+//           future: _getImage,
+//           builder: (context, snapshot) {
+//
+//             if(snapshot.hasData) {
+//               final image = snapshot.data as GenImgResponse;
+//               return Center(
+//                 child: Container(
+//                   width: 200,
+//                   height: 200,
+//
+//                   decoration: BoxDecoration(
+//                     color: Colors.red,
+//
+//                     image: DecorationImage(
+//                       image: NetworkImage(image.data!.first!.url!),
+//                       fit: BoxFit.cover,
+//                     ),
+//                   ),
+//                 ),
+//               );
+//             }else return Container(color: Colors.green,);
+//     }
+//     ));
+//   }
+// }
+// Future<GenImgResponse> _generateImageFuture() async {
+//   const prompt = "snow white & dinosaur cartoon";
+//
+//   final request = GenerateImage(prompt, 1,size: ImageSize.size256,
+//       responseFormat: Format.url);
+//   final response = await initOpenAI().generateImage(request);
+//   print("img url :${response?.data?.last?.url}");
+//   return response!;
+// }

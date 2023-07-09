@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kids_reader_gpt/animations/fly_in_animation.dart';
 import 'package:kids_reader_gpt/enums/story_stage.dart';
 import 'package:kids_reader_gpt/state_management/state_manager.dart';
-import 'package:kids_reader_gpt/utils/showPopup.dart';
+import 'package:kids_reader_gpt/utils/show_popup.dart';
 import 'package:kids_reader_gpt/utils/string_extensions.dart';
 import '../../../animations/bounce_animation.dart';
 import '../../../configs/constants.dart';
